@@ -8,7 +8,9 @@
                  [ring/ring-jetty-adapter "1.9.6"]
                  [metosin/reitit-core "0.5.18"]
                  [metosin/reitit-ring "0.5.18"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [com.github.seancorfield/next.jdbc "1.3.847"]
+                 [org.postgresql/postgresql "42.5.1"]]
   :main ^:skip-aot todomvc.backend.core
   :target-path "target/%s"
   :plugins [[lein-cljfmt "0.9.0"]]
