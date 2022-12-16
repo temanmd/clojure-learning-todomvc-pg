@@ -22,11 +22,43 @@
 (defn create-todos-table
   []
   (db-query
-    (hsql/format {:create-table :todos
-                  :with-columns
-                  [[:id :int [:not nil]]
-                   [:title :text [:not nil]]
-                   [:done :boolean [:not nil]]]})))
+    (hsql/format
+      {:create-table :todos
+       :with-columns
+       [[:id :serial :primary-key]
+        [:title :text [:not nil]]
+        [:done :boolean [:not nil]]]})))
+
+(defn add-todo
+  [title]
+  (db-query-one
+    (hsql/format
+      {:insert-into [:todos]
+       :columns [:title :done]
+       :values [[title false]]})))
+
+(defn delete-todo
+  [id]
+  (db-query-one
+    (hsql/format
+      {:delete-from [:todos]
+       :where [:= :id id]})))
+
+(defn toggle-todo
+  [id]
+  (db-query-one
+    (hsql/format
+      {:update :todos
+       :set {:done [:not :done]}
+       :where [:= :id id]})))
+
+(defn change-todo
+  [id title]
+  (db-query-one
+    (hsql/format
+      {:update :todos
+       :set {:title title}
+       :where [:= :id id]})))
 
 (defn db-query
   [sql]
@@ -71,4 +103,9 @@
   (jdbc/execute! db
     ["SELECT * FROM users"])
 
-  (create-todos-table))
+  (create-todos-table)
+
+  (add-todo "Make a sandwich")
+  (delete-todo 1)
+  (toggle-done 3)
+  (change-todo 3 "Make a salad"))
