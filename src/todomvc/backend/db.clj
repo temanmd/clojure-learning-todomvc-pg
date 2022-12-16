@@ -19,10 +19,14 @@
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
 
-(defn create-db
-  [db-name]
-  (let [sql "CREATE DATABASE "]
-    (db-query sql)))
+(defn create-todos-table
+  []
+  (db-query
+    (hsql/format {:create-table :todos
+                  :with-columns
+                  [[:id :int [:not nil]]
+                   [:title :text [:not nil]]
+                   [:done :boolean [:not nil]]]})))
 
 (defn db-query
   [sql]
@@ -67,4 +71,4 @@
   (jdbc/execute! db
     ["SELECT * FROM users"])
 
-  (create-db "todomvc"))
+  (create-todos-table))
