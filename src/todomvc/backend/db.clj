@@ -11,8 +11,13 @@
    :user "postgres"
    :password "postgres"})
 
-(def db
+(def datasource
   (jdbc/get-datasource db-config))
+
+(def db
+  (jdbc/with-options datasource
+    {:return-keys true
+     :builder-fn result-set/as-unqualified-lower-maps}))
 
 (comment
   db-config
@@ -26,9 +31,9 @@
                "tema@email.example"]}))
   select-sql
   (jdbc/execute! db
-    select-sql
-    {:return-keys true
-     :builder-fn result-set/as-unqualified-maps})
+    select-sql)
+  (jdbc/execute-one! db
+    select-sql)
 
   (jdbc/execute! db
     ["CREATE TABLE users(
@@ -41,10 +46,6 @@
   (jdbc/execute! db
     ["INSERT INTO users
       (username, email, password) values
-      ('tema', 'tema@email.example', 'password')"]
-    {:return-keys true
-     :builder-fn result-set/as-unqualified-maps})
+      ('tema', 'tema@email.example', 'password')"])
   (jdbc/execute! db
-    ["SELECT * FROM users"]
-    {:return-keys true
-     :builder-fn result-set/as-unqualified-maps}))
+    ["SELECT * FROM users"]))
