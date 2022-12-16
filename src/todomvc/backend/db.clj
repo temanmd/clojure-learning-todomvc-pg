@@ -1,7 +1,6 @@
 (ns todomvc.backend.db
   (:require
     [honey.sql :as hsql]
-    [honey.sql.helpers :as hsql-helpers]
     [next.jdbc :as jdbc]
     [next.jdbc.result-set :as result-set]))
 
@@ -9,7 +8,8 @@
   {:dbtype "postgresql"
    :host "localhost"
    :user "postgres"
-   :password "postgres"})
+   :password "postgres"
+   :dbname "todomvc"})
 
 (def datasource
   (jdbc/get-datasource db-config))
@@ -19,6 +19,11 @@
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
 
+(defn create-db
+  [db-name]
+  (let [sql "CREATE DATABASE "]
+    (db-query sql)))
+
 (defn db-query
   [sql]
   (jdbc/execute! db sql))
@@ -26,6 +31,7 @@
 (defn db-query-one
   [sql]
   (jdbc/execute-one! db sql))
+
 
 (comment
   db-config
@@ -59,4 +65,6 @@
       (username, email, password) values
       ('tema', 'tema@email.example', 'password')"])
   (jdbc/execute! db
-    ["SELECT * FROM users"]))
+    ["SELECT * FROM users"])
+
+  (create-db "todomvc"))
