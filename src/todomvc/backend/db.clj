@@ -4,6 +4,8 @@
     [next.jdbc :as jdbc]
     [next.jdbc.result-set :as result-set]))
 
+;; Setup
+
 (def db-config
   {:dbtype "postgresql"
    :host "localhost"
@@ -18,6 +20,18 @@
   (jdbc/with-options datasource
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
+
+;; Helpers
+
+(defn db-query
+  [sql]
+  (jdbc/execute! db sql))
+
+(defn db-query-one
+  [sql]
+  (jdbc/execute-one! db sql))
+
+;; Todos
 
 (defn create-todos-table
   []
@@ -59,14 +73,6 @@
       {:update :todos
        :set {:title title}
        :where [:= :id id]})))
-
-(defn db-query
-  [sql]
-  (jdbc/execute! db sql))
-
-(defn db-query-one
-  [sql]
-  (jdbc/execute-one! db sql))
 
 
 (comment
