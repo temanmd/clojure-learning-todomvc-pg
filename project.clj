@@ -10,6 +10,7 @@
                  [metosin/reitit-ring "0.5.18"]
                  [hiccup "1.0.5"]
                  [com.github.seancorfield/next.jdbc "1.3.847"]
+                 [com.github.seancorfield/honeysql "2.4.947"]
                  [org.postgresql/postgresql "42.5.1"]]
   :main ^:skip-aot todomvc.backend.core
   :target-path "target/%s"
