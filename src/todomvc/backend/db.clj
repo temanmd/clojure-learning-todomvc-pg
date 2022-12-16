@@ -19,6 +19,14 @@
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
 
+(defn db-query
+  [sql]
+  (jdbc/execute! db sql))
+
+(defn db-query-one
+  [sql]
+  (jdbc/execute-one! db sql))
+
 (comment
   db-config
   db
@@ -34,6 +42,9 @@
     select-sql)
   (jdbc/execute-one! db
     select-sql)
+
+  (db-query select-sql)
+  (db-query-one select-sql)
 
   (jdbc/execute! db
     ["CREATE TABLE users(
