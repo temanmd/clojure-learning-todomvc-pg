@@ -4,6 +4,16 @@
     [next.jdbc :as jdbc]
     [next.jdbc.result-set :as result-set]))
 
+;; Helpers
+
+(defn db-query
+  [sql]
+  (jdbc/execute! db sql))
+
+(defn db-query-one
+  [sql]
+  (jdbc/execute-one! db sql))
+
 ;; Setup
 
 (def db-config
@@ -21,18 +31,6 @@
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
 
-;; Helpers
-
-(defn db-query
-  [sql]
-  (jdbc/execute! db sql))
-
-(defn db-query-one
-  [sql]
-  (jdbc/execute-one! db sql))
-
-;; Todos
-
 (defn create-todos-table
   []
   (db-query
@@ -42,6 +40,15 @@
        [[:id :serial :primary-key]
         [:title :text [:not nil]]
         [:done :boolean [:not nil]]]})))
+
+;; Todos
+
+(defn get-all-todos
+  []
+  (db-query
+    (hsql/format
+      {:select [:*]
+       :from [:todos]})))
 
 (defn add-todo
   [title]
@@ -85,6 +92,9 @@
        :from [:users]
        :where [:= :users.email
                "tema@email.example"]}))
+
+  (get-all-todos)
+
   select-sql
   (jdbc/execute! db
     select-sql)
