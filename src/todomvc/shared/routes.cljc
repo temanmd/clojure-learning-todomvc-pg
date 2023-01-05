@@ -1,5 +1,6 @@
 (ns todomvc.shared.routes)
 
 (def routes
-  [["/" :index]
-   ["/api" :api]])
+  [["/api" {:interceptors [:api]}
+    ["/todos" :todos]]
+   ["/app" :app-index]])

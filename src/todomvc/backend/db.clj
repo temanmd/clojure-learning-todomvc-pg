@@ -123,5 +123,5 @@
 
   (add-todo "Make a sandwich")
   (delete-todo 1)
-  (toggle-done 3)
+  (toggle-todo 3)
   (change-todo 3 "Make a salad"))

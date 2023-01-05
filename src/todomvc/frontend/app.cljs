@@ -25,7 +25,7 @@
   (rfe/start!
     (rf/router routes/routes {:data {:coercion rcs/coercion}
                               :expand (my-expand
-                                        {:index {:view views/home-page}})})
+                                        {:app-index {:view views/home-page}})})
 
     (fn [new-match] (re-frame/dispatch [:navigated new-match]))
 
