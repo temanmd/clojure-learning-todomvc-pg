@@ -6,7 +6,7 @@
     [reitit.frontend.easy :as rfe]
     [reitit.coercion.spec :as rcs]
     [reitit.core :as ring-core]
-    [todomvc.shared.routes :as routes]
+    [todomvc.shared.routes :as shared-routes]
     [todomvc.frontend.events]
     [todomvc.frontend.subs]
     [todomvc.frontend.effects]
@@ -23,9 +23,7 @@
 
 (defn init-routes []
   (rfe/start!
-    (rf/router routes/routes {:data {:coercion rcs/coercion}
-                              :expand (my-expand
-                                        {:app-index {:view views/home-page}})})
+    (rf/router shared-routes/routes {:data {:coercion rcs/coercion}})
 
     (fn [new-match] (re-frame/dispatch [:navigated new-match]))
 

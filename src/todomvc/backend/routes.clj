@@ -2,14 +2,18 @@
   (:require
     [reitit.ring :as ring]
     [reitit.core :as ring-core]
-    [todomvc.backend.html-page :as html]
+    [reitit.coercion.schema]
+    [reitit.ring.coercion :refer [coerce-exceptions-middleware
+                                  coerce-request-middleware
+                                  coerce-response-middleware]]
+    [reitit.ring.middleware.exception :refer [exception-middleware]]
+    [reitit.ring.middleware.muuntaja :refer [format-request-middleware
+                                             format-response-middleware
+                                             format-negotiate-middleware]]
+    [muuntaja.core :as m]
+    [todomvc.backend.router-handlers :as handlers]
     [todomvc.shared.routes :as shared-routes]
     [clojure.pprint :refer [pprint]]))
-
-(defn frontend-handler [request]
-  {:status 200
-   :headers {"Content-Type" "text/html"}
-   :body (html/html-page)})
 
 (defn api-handler [request]
   {:status 200
@@ -37,8 +41,15 @@
   (ring/ring-handler
     (ring/router
       shared-routes/routes
-      {:expand (my-expand {:todos {:get api-handler}
-                           :app-index {:get frontend-handler}})})
+      {:data {:coercion reitit.coercion.schema/coercion
+              :muuntaja m/instance
+              :middleware [format-negotiate-middleware
+                           format-response-middleware
+                           exception-middleware
+                           format-request-middleware
+                           coerce-exceptions-middleware
+                           coerce-request-middleware
+                           coerce-response-middleware]}})
     (ring/routes
       (ring/create-resource-handler {:path "/" :root "/public"})
       (ring/create-default-handler
