@@ -4,16 +4,6 @@
     [next.jdbc :as jdbc]
     [next.jdbc.result-set :as result-set]))
 
-;; Helpers
-
-(defn db-query
-  [sql]
-  (jdbc/execute! db sql))
-
-(defn db-query-one
-  [sql]
-  (jdbc/execute-one! db sql))
-
 ;; Setup
 
 (def db-config
@@ -30,6 +20,16 @@
   (jdbc/with-options datasource
     {:return-keys true
      :builder-fn result-set/as-unqualified-lower-maps}))
+
+;; Helpers
+
+(defn db-query
+  [sql]
+  (jdbc/execute! db sql))
+
+(defn db-query-one
+  [sql]
+  (jdbc/execute-one! db sql))
 
 (defn create-todos-table
   []
