@@ -12,15 +12,6 @@
     [todomvc.frontend.effects]
     [todomvc.frontend.views :as views]))
 
-(defn my-expand [registry]
-  (fn [data opts]
-    (if (keyword? data)
-      (some-> data
-        registry
-        (ring-core/expand opts)
-        (assoc :name data))
-      (ring-core/expand data opts))))
-
 (defn init-routes []
   (rfe/start!
     (rf/router shared-routes/routes {:data {:coercion rcs/coercion}})

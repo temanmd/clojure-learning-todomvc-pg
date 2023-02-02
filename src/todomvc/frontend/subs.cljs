@@ -70,4 +70,3 @@
   (fn [[todos completed-count] _]
     [(- (count todos) completed-count)
      completed-count]))
-

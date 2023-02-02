@@ -12,9 +12,4 @@
 (defn get-all-todos
   [_]
   {:status 200
-   ;; :headers {"Content-Type" "application/json"}
    :body (db/get-all-todos)})
-   ;; :body {:hello "world"}})
-
-(comment
-  (get-all-todos nil))

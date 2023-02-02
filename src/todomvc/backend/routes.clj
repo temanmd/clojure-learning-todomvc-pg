@@ -28,14 +28,14 @@
 ;       {:handler frontend-handler})
 ;     (ring-core/expand data opts)))
 
-(defn my-expand [registry]
-  (fn [data opts]
-    (if (keyword? data)
-      (some-> data
-        registry
-        (ring-core/expand opts)
-        (assoc :name data))
-      (ring-core/expand data opts))))
+; (defn my-expand [registry]
+;   (fn [data opts]
+;     (if (keyword? data)
+;       (some-> data
+;         registry
+;         (ring-core/expand opts)
+;         (assoc :name data))
+;       (ring-core/expand data opts))))
 
 (def router
   (ring/ring-handler
